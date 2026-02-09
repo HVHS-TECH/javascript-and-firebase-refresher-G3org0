@@ -1,5 +1,4 @@
   // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,6 +15,9 @@ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase, ref, set, get, update, query, orderByChild, limitToFirst, orderByValue }
 from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
+export { fb_initialise, fb_authenticate};
+
+
   const firebaseConfig = {
     apiKey: "AIzaSyCL14Sc9EDczIuW0z3HgrCMn1LillHCt68",
     authDomain: "yr-13-dc94b.firebaseapp.com",
@@ -26,5 +28,64 @@ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
     appId: "1:981036459519:web:15816892c53f3f30b773ca"
   };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
+  
+/**************************************************************/
+// Functions
+/**************************************************************/
+  ///////////////////////////////////
+  //Name:fb_initialise()
+  //When: main.mjs
+  //Job: estableshes connection with firebase
+  //Input: N/A
+  //Output:N/A
+  ////////////////////////////////
+  function fb_initialise() {
+    console.log('fb_initialise():');
+    const FB_GAMECONFIG = {
+      apiKey: "AIzaSyAzZNYkhvc3Jil5cxwUYZEv-t-fP0ZwR0s",
+      authDomain: "comp-2025-george-taylor.firebaseapp.com",
+      databaseURL: "https://comp-2025-george-taylor-default-rtdb.firebaseio.com",
+      projectId: "comp-2025-george-taylor",
+      storageBucket: "comp-2025-george-taylor.firebasestorage.app",
+      messagingSenderId: "869054825808",
+      appId: "1:869054825808:web:66e65a5f7922a5c11dd855",
+      measurementId: "G-LXDGSSYJ0N"
+    };
+    const FB_GAMEAPP = initializeApp(FB_GAMECONFIG);
+  }
+
+///////////////////////////////////
+//Name:fb_authenticate()
+//When: fb_attemptLogIn()
+//Job: opens pop for account authetafication, reads if user is registered and returns true or false
+//Input: N/A
+//Output: if user is registerd in database (true/false)
+////////////////////////////////
+function fb_authenticate(){
+  console.log('%c fb_authenticate()');
+  const AUTH = getAuth();
+  const PROVIDER = new GoogleAuthProvider();
+  PROVIDER.setCustomParameters({});
+
+  return signInWithPopup(AUTH, PROVIDER).then((result) => {
+    console.log("Autherising");
+    userDetails.displayName = result.user.displayName
+    userDetails.email = result.user.email
+    userDetails.photoUrl = result.user.photoURL
+    userDetails.uid = result.user.uid
+    fb_readRecords("adminUsers/" + userDetails.uid).then((snapshot) => {
+      adminVal = (snapshot != null);
+      sessionStorage.setItem("adminVal", adminVal);
+      console.log(JSON.parse(sessionStorage.getItem("adminVal")));
+    });
+        
+    sessionStorage.setItem("userDetails", JSON.stringify(userDetails));
+    console.log(result)
+    return fb_readRecords("userDetails/" + userDetails.uid).then((snapshot) => {
+    return snapshot !== null;
+  })
+  .catch((error) => {
+    console.log("error");
+  });
+  })
+}
