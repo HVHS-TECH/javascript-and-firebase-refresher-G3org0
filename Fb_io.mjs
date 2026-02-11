@@ -15,18 +15,7 @@ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase, ref, set, get, update, query, orderByChild, limitToFirst, orderByValue }
 from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
-export { fb_initialise, fb_authenticate};
-
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCL14Sc9EDczIuW0z3HgrCMn1LillHCt68",
-    authDomain: "yr-13-dc94b.firebaseapp.com",
-    databaseURL: "https://yr-13-dc94b-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "yr-13-dc94b",
-    storageBucket: "yr-13-dc94b.firebasestorage.app",
-    messagingSenderId: "981036459519",
-    appId: "1:981036459519:web:15816892c53f3f30b773ca"
-  };
+export { fb_initialise, fb_authenticate, fb_readRecords, fb_writeRecords};
 
   
   export let userDetails = {
@@ -40,6 +29,8 @@ export { fb_initialise, fb_authenticate};
   age:'n/a',
 };
 
+const COL_C = 'white'; 	
+const COL_B = '#CD7F32';	
 /**************************************************************/
 // Functions
 /**************************************************************/
@@ -51,7 +42,8 @@ export { fb_initialise, fb_authenticate};
   //Output:N/A
   ////////////////////////////////
   function fb_initialise() {
-    console.log('fb_initialise():');
+    console.log('%cfb_initialise(): ', 
+  'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     const FB_GAMECONFIG = {
     apiKey: "AIzaSyCL14Sc9EDczIuW0z3HgrCMn1LillHCt68",
     authDomain: "yr-13-dc94b.firebaseapp.com",
@@ -72,7 +64,8 @@ export { fb_initialise, fb_authenticate};
 //Output: if user is registerd in database (true/false)
 ////////////////////////////////
 function fb_authenticate(){
-  console.log('%c fb_authenticate()');
+  console.log('%c fb_authenticate(): ', 
+  'color: ' + COL_C + '; background-color: ' + COL_B + ';');
   const AUTH = getAuth();
   const PROVIDER = new GoogleAuthProvider();
   PROVIDER.setCustomParameters({});
@@ -80,22 +73,16 @@ function fb_authenticate(){
   return signInWithPopup(AUTH, PROVIDER).then((result) => {
     console.log("Autherising");
     userDetails.uid = result.user.uid
-    fb_readRecords("adminUsers/" + userDetails.uid).then((snapshot) => {
-      adminVal = (snapshot != null);
-      sessionStorage.setItem("adminVal", adminVal);
-      console.log(JSON.parse(sessionStorage.getItem("adminVal")));
-    });
         
     sessionStorage.setItem("userDetails", JSON.stringify(userDetails));
     console.log(result)
-    return fb_readRecords("userDetails/" + userDetails.uid).then((snapshot) => {
-    return snapshot !== null;
+
+    fb_writeRecords("userDetails/" + userDetails.uid, userDetails);
   })
   .catch((error) => {
-    console.log("error");
+    console.log("error Autherising");
   });
-  })
-}
+  }
 
 function fb_Logout() {
   console.log('%c fb_Logout(): ', 
