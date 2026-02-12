@@ -136,7 +136,7 @@ function fb_readRecords(pathKey) {
     .then((snapshot) => {
       if (snapshot.val() != null) {
         console.log("Snapshot value:", snapshot.val());
-        return snapshot;
+        return snapshot.val();
       } else {
         console.log("No data found.");
         return null;

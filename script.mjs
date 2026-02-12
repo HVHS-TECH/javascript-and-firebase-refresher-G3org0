@@ -13,6 +13,7 @@ var textInput = document.getElementById("textInput");
 
 var changeHeaderBtn = document.getElementById("headerChangeBtn");
 var sendMessageBtn = document.getElementById("sendMessageBtn");
+var readMessageBtn = document.getElementById("readMessageBtn");
 
 messageSpace.innerHTML = "You've connected to the JavaScript!";
 
@@ -24,13 +25,20 @@ sendMessageBtn.addEventListener("click", () => {
     sendMessage();
 });
 
+readMessageBtn.addEventListener("click", () => {
+    readMessage();
+});
+
 function changeHeading(){
     messageSpace.innerHTML = textInput.value;
 }
 
 function sendMessage(){
-    console.log("sending");
     fb_writeRecords("messages/" + userDetails.uid, textInput.value);
+}
+
+async function readMessage(){
+    messageSpace.innerHTML = await fb_readRecords("messages/" + userDetails.uid);
 }
 
 
