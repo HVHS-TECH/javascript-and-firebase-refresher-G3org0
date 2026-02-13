@@ -155,7 +155,7 @@ function fb_readRecords(pathKey) {
 //Input: (pathKey, (location in database))
 //Output: Sorted Array
 ////////////////////////////////
-function fb_sortedRead(pathKey) {
+export function fb_sortedRead(pathKey) {
   console.log('%c fb_sortedRead(): ', 
   'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
@@ -165,7 +165,7 @@ function fb_sortedRead(pathKey) {
     if (snapshot.exists()) {
       snapshot.forEach((_child) => {
         SORTED.push({key: _child.key, value: _child.val()})})
-        return SORTED.reverse();
+        return SORTED
     } else {
     console.log("Nothing to sort");
   }
