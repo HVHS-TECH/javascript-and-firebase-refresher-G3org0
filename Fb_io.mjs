@@ -43,16 +43,17 @@ const COL_B = '#CD7F32';
   ////////////////////////////////
   function fb_initialise() {
     console.log('%cfb_initialise(): ', 
-  'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    
     const FB_GAMECONFIG = {
-    apiKey: "AIzaSyCL14Sc9EDczIuW0z3HgrCMn1LillHCt68",
-    authDomain: "yr-13-dc94b.firebaseapp.com",
-    databaseURL: "https://yr-13-dc94b-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "yr-13-dc94b",
-    storageBucket: "yr-13-dc94b.firebasestorage.app",
-    messagingSenderId: "981036459519",
-    appId: "1:981036459519:web:15816892c53f3f30b773ca"
-    };
+    apiKey: "AIzaSyB-pYUkOfLB8fA0s1pYCZdMQ4U7i7Fadf0",
+    authDomain: "comp-2025-george-taylor-be24d.firebaseapp.com",
+    databaseURL: "https://comp-2025-george-taylor-be24d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "comp-2025-george-taylor-be24d",
+    storageBucket: "comp-2025-george-taylor-be24d.firebasestorage.app",
+    messagingSenderId: "6475325797",
+    appId: "1:6475325797:web:39117eb196e136fca0418c"
+  };
     const FB_GAMEAPP = initializeApp(FB_GAMECONFIG);
   }
 
@@ -78,6 +79,8 @@ function fb_authenticate(){
     console.log(result)
 
     fb_writeRecords("userDetails/" + userDetails.uid, userDetails);
+
+    fb_readRecords("/")
   })
   .catch((error) => {
     console.log("error Autherising");
